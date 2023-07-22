@@ -44,33 +44,3 @@ export function passwordValidate(password) {
 
     return error;
 }
-// export default function formValidation(data) {
-//     let errors = {};
-
-//     const isValidEmail = (email) => {
-//         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//         return emailPattern.test(email);
-//     };
-
-//     const isValidPassword = (password) => {
-//         const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/;
-//         return passwordPattern.test(password);
-//     };
-
-//     if (!data.email) {
-//       errors.email = 'Email is required';
-//     } else if (!isValidEmail(data.email)) {
-//       errors.email = 'Invalid email address';
-//     }
-
-//     if (!data.password) {
-//       errors.password = 'Password is required';
-//     } else if (data.password.length < 8) {
-//       errors.password = 'Password must be at least 8 characters long';
-//     } else if (!isValidPassword(data.password)) {
-//         errors.password =
-//         'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character';
-//     }
-
-//     return errors;
-// }
