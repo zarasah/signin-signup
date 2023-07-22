@@ -1,7 +1,8 @@
+import './Signup.css';
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { nameValidate, emailValidate, passwordValidate } from '../utils/validation';
-import postData from "../api/api";
+import postData from "../api/register";
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function SignUp() {
     });
     
     const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -23,8 +26,15 @@ export default function SignUp() {
         setErrors(validationErrors);
         
         if (Object.keys(validationErrors).length === 0) {
-            console.log('if')
-            postData(formData);
+            postData(formData)
+                .then(response => {
+                    console.log('Registration successful:', response);
+                    setSuccessMessage('Registration successful!');
+                })
+                .catch(error => {
+                    console.error('Error during registration:', error.message);
+                    setErrorMessage(error.message);
+                });
         }
     }
 
@@ -56,6 +66,26 @@ export default function SignUp() {
                 <input type = "submit" value = "SIGN UP" />
             </form>
             <Link to = "/">Back</Link>
+
+            {successMessage && (
+                <div className="modal">
+                <div className="modal-content">
+                    <h2>Success!</h2>
+                    <p>{successMessage}</p>
+                    <Link to="/">Sign In</Link>
+                </div>
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="modal">
+                <div className="modal-content">
+                    <h2>Error</h2>
+                    <p>{errorMessage}</p>
+                    <button onClick={() => setErrorMessage('')}>Close</button>
+                </div>
+                </div>
+            )}
         </div>
     )
 }
