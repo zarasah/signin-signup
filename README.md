@@ -11,14 +11,6 @@ This is a web application that allows users to sign in, sign up, and sign up usi
 * Google sign-up: Users can sign up using their Google account.
 * User information: After signing in, users are redirected to their user page, where they can see their account information.
 
-## Technologies/libraries used
-
-* React
-* Redux Toolkit
-* Redux Saga
-* React Router DOM
-* Material UI
-
 # Getting Started
 
 * Clone the repository:
