@@ -1,9 +1,9 @@
 import { Outlet, Navigate } from 'react-router-dom';
 
 export default function UserLayout() {
-    const jwt = localStorage.getItem('jwt')
+    const sessionToken = localStorage.getItem('sessionToken')
     
-    if (jwt) {
+    if (sessionToken) {
         return (
             <Outlet />            
         )
