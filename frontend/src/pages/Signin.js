@@ -1,7 +1,10 @@
-import { useState } from "react";
+import './Signin.css';
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { emailValidate, passwordValidate } from '../utils/validation';
 import login from '../api/login';
+import getGoogleUrl from "../utils/getGoogleUrl";
+import { FcGoogle } from 'react-icons/fc'
 
 export default function SignIn() {
     const navigate = useNavigate();
@@ -9,9 +12,26 @@ export default function SignIn() {
         email: '',
         password: '',
     });
-    console.log(formData)
     const [errors, setErrors] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
+    const [accessToken, setAccessToken] = useState(null); //
+
+    function setAccessTokenFromURL() {
+        const searchParams = new URLSearchParams(window.location.search);
+        const token = searchParams.get('token');
+        const username = searchParams.get('username');
+  
+        if (token) {
+          setAccessToken(token);
+          localStorage.setItem('jwt', token);
+          localStorage.setItem('username', username);
+          navigate('/user');
+        }
+      }
+  
+      useEffect(() => {
+        setAccessTokenFromURL();
+      }, []);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -49,19 +69,27 @@ export default function SignIn() {
     };
 
     return (
-        <div>
+        <div className="wrapper">
             <h1>Sign In</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <input type = "email" name = "email" placeholder="Email" value={formData.email} onChange={handleChange} />
+                    <input type = "email" name = "email" placeholder="Email" className="signin-input" value={formData.email} onChange={handleChange} />
                     {errors.email && <div className="error-text"><span>{errors.email}</span></div>}
                 </div>
                 <div>
-                    <input type = "password" name = "password" placeholder="Password" value={formData.password} onChange={handleChange} />
+                    <input type = "password" name = "password" placeholder="Password" className="signin-input" value={formData.password} onChange={handleChange} />
                     {errors.password && <div className="error-text"><span>{errors.password}</span></div>}
                 </div>
-                <input type = "submit" value = "SIGN IN"/>
+                <input type = "submit" value = "SIGN IN" className="signin-button"/>
             </form>
+            <div className="separator">
+                <hr />
+                <span className="separator-text">OR</span>
+                <hr />
+            </div>
+            <div>
+                <Link to = {getGoogleUrl()} className="signin-google-button"><span className="google-icon"> <FcGoogle/> </span>Sing up with google</Link>
+            </div>
             <p> Don't have an account? <Link to="/register">SIGN UP</Link></p>
             {errorMessage && (
                 <div className="modal">

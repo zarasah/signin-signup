@@ -1,6 +1,9 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const { generateAccessToken } = require('../utils/generateAccessToken');
+const { getGoogleOAuthTokens } = require('../utils/getGoogleOAuthTokens');
+const { getGoogleUser } = require('../utils/getGoogleUser');
+const { generateRandomPassword } = require('../utils/generateRandomPassword');
 const registerSchema = require('../validation/registerSchema');
 const loginSchema = require('../validation/loginSchema');
 
@@ -70,7 +73,39 @@ function login(req, res) {
     });
 }
 
+async function googleOauthHandler(req, res) {
+    const code = req.query.code;
+
+    try {
+        const {id_token, access_token} = await getGoogleOAuthTokens(code);        
+        const googleUser = await getGoogleUser(id_token, access_token);
+        const token = generateAccessToken(googleUser.id, googleUser.email);
+        const user = await User.findOne({
+            where: {
+                email: googleUser.email
+            }
+        })
+
+        if (!user) {
+            const randomPassword = await generateRandomPassword();
+            const { name, email } = googleUser;
+
+            await User.create({
+                name,
+                email,
+                password: randomPassword,
+            })
+        }
+
+        res.redirect(`http://localhost:3000/?token=${token}&username=${googleUser.name}`);
+    } catch(error) {
+        return res.redirect('http://localhost:3000/')
+    }
+    
+}
+
 module.exports = {
     register,
-    login
+    login,
+    googleOauthHandler
 }

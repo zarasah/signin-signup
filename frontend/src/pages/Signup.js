@@ -48,22 +48,22 @@ export default function SignUp() {
     };
 
     return (
-        <div>
+        <div className="wrapper">
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <input type = "text" name = "name" placeholder="Name" onChange={handleChange} />
+                    <input type = "text" name = "name" placeholder="Name" className="signin-input" onChange={handleChange} />
                     {errors.name && <div className="error-text"><span>{errors.name}</span></div>}
                 </div>
                 <div>
-                    <input type = "email" name = "email" placeholder="Email" onChange={handleChange} />
+                    <input type = "email" name = "email" placeholder="Email" className="signin-input" onChange={handleChange} />
                     {errors.email && <div className="error-text"><span>{errors.email}</span></div>}
                 </div>
                 <div>
-                    <input type = "password" name = "password" placeholder="Password" onChange={handleChange} />
+                    <input type = "password" name = "password" className="signin-input" placeholder="Password" onChange={handleChange} />
                     {errors.password && <div className="error-text"><span>{errors.password}</span></div>}
                 </div>
-                <input type = "submit" value = "SIGN UP" />
+                <input type = "submit" value = "SIGN UP" className="signin-button" />
             </form>
             <Link to = "/">Back</Link>
 
